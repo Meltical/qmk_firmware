@@ -1,46 +1,74 @@
 #include QMK_KEYBOARD_H
 #include "features/swapper.h"
 #include "features/achordion.h"
-#include "keymap_us_international.h"
+#include "keymap_french.h"
 
-#define HOME KC_HOME
+#define HOME KC_HOME 
 #define END KC_END
 
 #define LA_NAV LT(NAV, KC_SPC)
 #define LA_SYM LT(SYM, KC_BSPC)
 #define LA_FN LT(FN, KC_ENT)
 
-#define REDO C(KC_Y)
-#define UNDO C(KC_Z)
-#define CUT C(KC_X)
-#define COPY C(KC_C)
-#define PASTE C(KC_V)
-#define SLCTALL C(KC_A)
+#define REDO C(FR_Y)
+#define UNDO C(FR_Z)
+#define CUT C(FR_X)
+#define COPY C(FR_C)
+#define PASTE C(FR_V)
+#define SLCTALL C(FR_A)
 
 #define PREV C(KC_LEFT)
 #define NEXT C(KC_RGHT)
 
 // Left-hand home row mods
-#define HOME_A LGUI_T(KC_A)
-#define HOME_R LALT_T(KC_R)
-#define HOME_S LCTL_T(KC_S)
-#define HOME_T LSFT_T(KC_T)
+#define HOME_A LGUI_T(FR_A)
+#define HOME_R LALT_T(FR_R)
+#define HOME_S LCTL_T(FR_S)
+#define HOME_T LSFT_T(FR_T)
 
 // Right-hand home row mods
-#define HOME_N RSFT_T(KC_N)
-#define HOME_E RCTL_T(KC_E)
-#define HOME_I LALT_T(KC_I)
-#define HOME_O RGUI_T(KC_O)
+#define HOME_N RSFT_T(FR_N)
+#define HOME_E RCTL_T(FR_E)
+#define HOME_I LALT_T(FR_I)
+#define HOME_O RGUI_T(FR_O)
 
-// Layers
 enum layers { ALPHA, NAV, SYM, FN, MOUSE };
 
-// Combos
-const uint16_t PROGMEM test_combo1[] = {KC_A, KC_B, COMBO_END};
-const uint16_t PROGMEM test_combo2[] = {KC_C, KC_D, COMBO_END};
-combo_t                key_combos[]  = {COMBO(test_combo1, KC_ESC), COMBO(test_combo2, KC_Q)};
+enum combo_events {
+  COMBO_E_2_EVENT
+};
+const uint16_t PROGMEM COMBO_A[] = {HOME_A, HOME_E, COMBO_END}; // à
+const uint16_t PROGMEM COMBO_E_1[] = {HOME_E, HOME_R, COMBO_END}; // é
+const uint16_t PROGMEM COMBO_E_2[] = {HOME_E, HOME_S, COMBO_END}; // ê
+const uint16_t PROGMEM COMBO_E_3[] = {HOME_E, HOME_T, COMBO_END}; // è
+const uint16_t PROGMEM COMBO_U[] = {FR_U, HOME_I, COMBO_END}; // ù
+const uint16_t PROGMEM COMBO_C[] = {FR_C, HOME_E, COMBO_END}; // ç
+combo_t key_combos[] = {
+    [COMBO_E_2_EVENT] = COMBO_ACTION(COMBO_E_2),
+    COMBO(COMBO_A, FR_AGRV),
+    COMBO(COMBO_E_1, FR_EACU),
+    COMBO(COMBO_E_3, FR_EGRV),
+    COMBO(COMBO_U, FR_UGRV),
+    COMBO(COMBO_C, FR_CCED)
+};
 
-enum keycodes {
+const key_override_t quot_override = ko_make_basic(MOD_MASK_SHIFT, FR_QUOT, FR_DQUO);
+const key_override_t slsh_override = ko_make_basic(MOD_MASK_SHIFT, FR_SLSH, FR_QUES);
+const key_override_t scln_override = ko_make_basic(MOD_MASK_SHIFT, FR_SCLN, FR_COLN);
+const key_override_t dot_override  = ko_make_basic(MOD_MASK_SHIFT, FR_DOT, FR_RABK);
+const key_override_t comm_override = ko_make_basic(MOD_MASK_SHIFT, FR_COMM, FR_LABK);
+
+// This globally defines all key overrides to be used
+const key_override_t** key_overrides = (const key_override_t*[]){
+    &quot_override,
+    &slsh_override,
+    &scln_override,
+    &dot_override,
+    &comm_override,
+    NULL // Null terminate the array of overrides!
+};
+
+enum swithers {
     SW_WIN = SAFE_RANGE, // Switch to next window
     SW_LANG,             // Switch to next input language
     SW_CTL,              // CTL+TAB, often used for switching tabs
@@ -49,11 +77,11 @@ enum keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [ALPHA] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                         KC_J,    KC_L,    KC_U,    KC_Y,  KC_GRV,  KC_DEL,
+       KC_ESC,    FR_Q,    FR_W,    FR_F,    FR_P,    FR_B,                         FR_J,    FR_L,    FR_U,    FR_Y,  FR_GRV,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       KC_TAB,  HOME_A,  HOME_R,  HOME_S,  HOME_T,    KC_G,                         KC_M,  HOME_N,  HOME_E,  HOME_I,  HOME_O, KC_QUOT,
+       KC_TAB,  HOME_A,  HOME_R,  HOME_S,  HOME_T,    KC_G,                         FR_M,  HOME_N,  HOME_E,  HOME_I,  HOME_O, FR_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      CW_TOGG,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SCLN, KC_SLSH,
+      CW_TOGG,    FR_Z,    FR_X,    FR_C,    FR_D,    FR_V,                         FR_K,    FR_H, FR_COMM,  FR_DOT, FR_SCLN, FR_SLSH,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                            SW_WIN,  LA_NAV, XXXXXXX,      LA_FN,  LA_SYM,  SW_CTL
                                       //`--------------------------'  `--------------------------'
@@ -72,29 +100,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
     [SYM] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX, KC_HASH,   KC_AT, KC_ASTR, KC_BSLS, US_EURO,                      KC_DLR,  KC_SLSH, KC_EQL, KC_CIRC, KC_TILD,  XXXXXXX,
+      XXXXXXX, FR_HASH,   FR_AT, FR_ASTR, FR_BSLS, FR_EURO,                      FR_DLR,  FR_SLSH, FR_EQL, FR_CIRC, FR_TILD,  XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,   KC_LT, KC_LBRC, KC_LPRN, KC_LCBR, KC_PLUS,                      KC_MINS, KC_RCBR, KC_RPRN, KC_RBRC,   KC_GT, XXXXXXX,
+      XXXXXXX, FR_LABK, FR_LBRC, FR_LPRN, FR_LCBR, FR_PLUS,                      FR_MINS, FR_RCBR, FR_RPRN, FR_RBRC, FR_RABK, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, KC_QUOT, KC_EXLM, KC_AMPR, KC_PERC,                      KC_UNDS, KC_PIPE, KC_QUES, KC_DQUO, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, FR_QUOT, FR_EXLM, FR_AMPR, FR_PERC,                      FR_UNDS, FR_PIPE, FR_QUES, FR_DQUO, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
     [FN] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX,  KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR,                      KC_SLSH,    KC_7,    KC_8,    KC_9, KC_ASTR, XXXXXXX,
+      XXXXXXX,  KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR,                      FR_SLSH,    FR_7,    FR_8,    FR_9, FR_ASTR, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,  KC_F11,   KC_F4,   KC_F5,   KC_F6, XXXXXXX,                      KC_MINS,    KC_4,    KC_5,    KC_6, KC_PLUS, XXXXXXX,
+      XXXXXXX,  KC_F11,   KC_F4,   KC_F5,   KC_F6, SW_LANG,                      FR_MINS,    FR_4,    FR_5,    FR_6, FR_PLUS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,  KC_F10,   KC_F1,   KC_F2,   KC_F3, XXXXXXX,                         KC_0,    KC_1,    KC_2,    KC_3, KC_COMM,  KC_DOT,
+      XXXXXXX,  KC_F10,   KC_F1,   KC_F2,   KC_F3, XXXXXXX,                         FR_0,    FR_1,    FR_2,    FR_3, FR_COMM,  FR_DOT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
     [MOUSE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_U, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       KC_ESC, XXXXXXX, XXXXXXX, KC_WH_U, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -129,6 +157,7 @@ void matrix_scan_user(void) {
 }
 
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) {
+    // Allow thumb keys
     if (tap_hold_record->event.key.row == 3 || tap_hold_record->event.key.row == 7) {
         return true;
     }
@@ -151,3 +180,39 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
     }
 }
 
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    switch (combo_index) {
+        case COMBO_E_2_EVENT:
+            if (pressed) {
+                tap_code(FR_CIRC);
+                tap_code(FR_E);
+            }
+            break;
+    }
+}
+
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_L:
+        case KC_SCLN: // M
+        case KC_N ... KC_Z:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case FR_1 ... FR_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case FR_UNDS:
+        case FR_MINS:
+            return true;
+
+        default:
+            return false;  // Deactivate Caps Word.
+    }
+}
+
+// TODOs:
+// - COMBOS (Add `()` + go one left)
+// - Review thumb clusters
