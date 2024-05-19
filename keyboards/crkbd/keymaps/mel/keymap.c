@@ -1,10 +1,12 @@
 // Used with the EurKey layout: https://eurkey.steffen.bruentjen.eu/layout.html
+// Exemples for pro micro (Caterina bootloader), see https://github.com/qmk/qmk_firmware/blob/master/docs/config_options.md for all options
+// To compile for mac on the left side, use `make crkbd:mel:avrdude-split-left OS=MAC`
+// To compile for windows on the right side, use `make crkbd:mel:avrdude-split-right OS=WIN`
 
 #include QMK_KEYBOARD_H
 #include "features/swapper.h"
 #include "features/achordion.h"
 
-//EurKey
 #define EURO RALT(KC_5) //€
 #define A_GRV RALT(KC_Z) //à
 #define E_AIG RALT(KC_G) //é
@@ -13,34 +15,61 @@
 #define C_CED RALT(KC_C) //ç
 #define D_CIR RALT(KC_6) //dead ^
 
-#define HOME KC_HOME 
-#define END KC_END
-
 #define LA_NAV LT(NAV, KC_SPC)
 #define LA_SYM LT(SYM, KC_BSPC)
 #define LA_FN LT(FN, KC_ENT)
 
-#define REDO C(KC_Y)
-#define UNDO C(KC_Z)
-#define CUT C(KC_X)
-#define COPY C(KC_C)
-#define PASTE C(KC_V)
-#define SLCTALL C(KC_A)
+#ifdef MAC
+    #define HOME G(KC_LEFT)
+    #define END G(KC_RGHT)
 
-#define PREV C(KC_LEFT)
-#define NEXT C(KC_RGHT)
+    #define REDO G(KC_Y)
+    #define UNDO G(KC_Z)
+    #define CUT G(KC_X)
+    #define COPY G(KC_C)
+    #define PASTE G(KC_V)
+    #define SLCTALL G(KC_A)
 
-// Left-hand home row mods
-#define HOME_A LGUI_T(KC_A)
+    #define PREV_W A(KC_LEFT)
+    #define NEXT_W A(KC_RGHT)
+
+    #define HOME_A LCTL_T(KC_A)
+    #define HOME_S LGUI_T(KC_S)
+
+    #define HOME_E LGUI_T(KC_E)
+    #define HOME_O LCTL_T(KC_O)
+
+    #define OS_CTL KC_LGUI
+    #define OS_GUI KC_LCTL
+#else
+    #define HOME KC_HOME
+    #define END KC_END
+
+    #define REDO C(KC_Y)
+    #define UNDO C(KC_Z)
+    #define CUT C(KC_X)
+    #define COPY C(KC_C)
+    #define PASTE C(KC_V)
+    #define SLCTALL C(KC_A)
+
+    #define PREV_W C(KC_LEFT)
+    #define NEXT_W C(KC_RGHT)
+
+    #define HOME_A LGUI_T(KC_A)
+    #define HOME_S LCTL_T(KC_S)
+
+    #define HOME_E LCTL_T(KC_E)
+    #define HOME_O LGUI_T(KC_O)
+
+    #define OS_CTL KC_LCTL
+    #define OS_GUI KC_LGUI
+#endif
+
 #define HOME_R LALT_T(KC_R)
-#define HOME_S LCTL_T(KC_S)
 #define HOME_T LSFT_T(KC_T)
 
-// Right-hand home row mods
-#define HOME_N RSFT_T(KC_N)
-#define HOME_E RCTL_T(KC_E)
+#define HOME_N LSFT_T(KC_N)
 #define HOME_I LALT_T(KC_I)
-#define HOME_O RGUI_T(KC_O)
 
 enum layers { ALPHA, NAV, SYM, FN, MOUSE };
 
@@ -80,7 +109,7 @@ enum custom_keycodes {
     //Switchers
     SW_WIN = SAFE_RANGE, // Switch to next window
     SW_LANG,             // Switch to next input language
-    SW_CTL,              // CTL+TAB, often used for switching tabs
+    SW_APP,              // CTL+TAB, often used for switching tabs
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -92,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       CW_TOGG,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SCLN, KC_SLSH,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           SW_WIN,  LA_NAV, XXXXXXX,      LA_FN,  LA_SYM,  SW_CTL
+                                           SW_WIN,  LA_NAV, KC_LSFT,      LA_FN,  LA_SYM,  SW_APP
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -100,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX, XXXXXXX,    REDO,    UNDO,  KC_SPC, XXXXXXX,                      KC_WH_U, KC_PGUP,   KC_UP, KC_PGDN, KC_WH_D, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, SLCTALL, XXXXXXX, XXXXXXX, KC_LSFT, XXXXXXX,                         HOME,    PREV, KC_DOWN,    NEXT,     END, XXXXXXX,
+      XXXXXXX, SLCTALL, KC_LALT, XXXXXXX, KC_LSFT, XXXXXXX,                         HOME,  PREV_W, KC_DOWN,  NEXT_W,     END, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX,     CUT,    COPY,   PASTE, XXXXXXX,                      KC_BTN4, KC_LEFT, XXXXXXX, KC_RGHT, KC_BTN5, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -131,11 +160,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
     [MOUSE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC, XXXXXXX, XXXXXXX, KC_WH_U, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       KC_ESC, XXXXXXX, XXXXXXX, KC_WH_U, KC_WH_D, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX,  OS_GUI, KC_LALT,  OS_CTL, KC_LSFT, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_D, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX,     CUT,    COPY,   PASTE, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_BTN3, KC_BTN1, KC_BTN2,    XXXXXXX, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
@@ -155,9 +184,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (!process_achordion(keycode, record)) {
         return false;
     }
+#ifdef MAC
+    update_swapper(&sw_win_active, KC_LGUI, KC_TAB, SW_WIN, keycode, record);
+    update_swapper(&sw_lang_active, C(KC_LALT), KC_SPC, SW_LANG, keycode, record);
+#else
     update_swapper(&sw_win_active, KC_LALT, KC_TAB, SW_WIN, keycode, record);
     update_swapper(&sw_lang_active, KC_LGUI, KC_SPC, SW_LANG, keycode, record);
-    update_swapper(&sw_ctl_active, KC_LCTL, KC_TAB, SW_CTL, keycode, record);
+#endif
+    update_swapper(&sw_ctl_active, KC_LCTL, KC_TAB, SW_APP, keycode, record);
     return true;
 }
 
@@ -225,3 +259,4 @@ bool caps_word_press_user(uint16_t keycode) {
 // - COMBOS (Add `()` + go one left)
 // - Review thumb clusters
 // - Add combos for unusual accent characters and uppercase versions
+// - Add go to beginning/end of file for mac/win

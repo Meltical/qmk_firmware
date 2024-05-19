@@ -24,3 +24,13 @@ MUSIC_ENABLE = no
 
 SRC += features/swapper.c
 SRC += features/achordion.c
+
+ifeq ($(OS),WIN)
+	# Default is windows
+else
+    ifeq ($(OS),MAC)
+        OPT_DEFS += -DMAC=TRUE
+    else
+        $(error "Must select OS")
+    endif
+endif

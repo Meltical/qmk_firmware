@@ -1,6 +1,10 @@
 #pragma once
 
-#define MASTER_RIGHT
+#define EE_HANDS
+
+// For pointing device on mac (left side master)
+#define SPLIT_POINTING_ENABLE
+#define POINTING_DEVICE_RIGHT
 
 #define DYNAMIC_KEYMAP_LAYER_COUNT 5
 
@@ -9,8 +13,8 @@
 #define QUICK_TAP_TERM_PER_KEY
 #define PERMISSIVE_HOLD
 
-#define ONESHOT_TAP_TOGGLE 5  /* Tapping this number of times holds the key until tapped once again. */
-#define ONESHOT_TIMEOUT 1000  /* Time (in ms) before the one shot key is released */
+#define ONESHOT_TAP_TOGGLE 5 /* Tapping this number of times holds the key until tapped once again. */
+#define ONESHOT_TIMEOUT 1000 /* Time (in ms) before the one shot key is released */
 
 // Trackpad
 #define MOUSE_EXTENDED_REPORT
