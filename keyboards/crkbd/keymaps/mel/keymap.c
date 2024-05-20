@@ -187,13 +187,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         return false;
     }
 #ifdef MAC
-    update_swapper(&sw_win_active, KC_LGUI, KC_TAB, SW_WIN, keycode, record);
-    update_swapper(&sw_lang_active, C(KC_LALT), KC_SPC, SW_LANG, keycode, record);
+    if (update_swapper(&sw_win_active, KC_LGUI, 0, KC_TAB, SW_WIN, keycode, record)) { return false; }
+    if (update_swapper(&sw_lang_active, KC_LCTL, KC_LALT, KC_SPC, SW_LANG, keycode, record)) { return false; }
 #else
-    update_swapper(&sw_win_active, KC_LALT, KC_TAB, SW_WIN, keycode, record);
-    update_swapper(&sw_lang_active, KC_LGUI, KC_SPC, SW_LANG, keycode, record);
+    if (update_swapper(&sw_win_active, KC_LALT, 0, KC_TAB, SW_WIN, keycode, record)) { return false; }
+    if (update_swapper(&sw_lang_active, KC_LGUI, 0, KC_SPC, SW_LANG, keycode, record)) { return false; }
 #endif
-    update_swapper(&sw_ctl_active, KC_LCTL, KC_TAB, SW_APP, keycode, record);
+    if (update_swapper(&sw_ctl_active, KC_LCTL, 0, KC_TAB, SW_APP, keycode, record)) { return false; }
     return true;
 }
 
@@ -267,3 +267,4 @@ bool caps_word_press_user(uint16_t keycode) {
 // - Review thumb clusters
 // - Add combos for unusual accent characters and uppercase versions
 // - Add go to beginning/end of file for mac/win
+// - Fix swapper for mac (Allow multiple cmdish)
