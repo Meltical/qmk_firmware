@@ -151,18 +151,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
     [FN] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX,  KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR,                      KC_SLSH,    KC_7,    KC_8,    KC_9, KC_ASTR, XXXXXXX,
+      XXXXXXX,  KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR,                      KC_SLSH,    KC_7,    KC_8,    KC_9, KC_MINS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,  KC_F11,   KC_F4,   KC_F5,   KC_F6, SW_LANG,                      KC_MINS,    KC_4,    KC_5,    KC_6, KC_PLUS, XXXXXXX,
+      XXXXXXX,  KC_F11,   KC_F4,   KC_F5,   KC_F6, SW_LANG,                      KC_ASTR,    KC_4,    KC_5,    KC_6, KC_PLUS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,  KC_F10,   KC_F1,   KC_F2,   KC_F3, XXXXXXX,                         KC_0,    KC_1,    KC_2,    KC_3, KC_COMM,  KC_DOT,
+      XXXXXXX,  KC_F10,   KC_F1,   KC_F2,   KC_F3, XXXXXXX,                      KC_COMM,    KC_1,    KC_2,    KC_3,  KC_DOT, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          XXXXXXX,  KC_SPC, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX
+                                          XXXXXXX,  KC_SPC,    KC_0,    XXXXXXX, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
     [MOUSE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC, XXXXXXX, XXXXXXX, KC_WH_U, KC_WH_D, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       KC_ESC, XXXXXXX, KC_WH_U, XXXXXXX, KC_WH_D, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,  OS_GUI, KC_LALT,  OS_CTL, KC_LSFT, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
