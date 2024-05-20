@@ -23,12 +23,13 @@
     #define HOME G(KC_LEFT)
     #define END G(KC_RGHT)
 
-    #define REDO G(KC_Y)
+    #define REDO S(G(KC_Z))
     #define UNDO G(KC_Z)
     #define CUT G(KC_X)
     #define COPY G(KC_C)
     #define PASTE G(KC_V)
     #define SLCTALL G(KC_A)
+    #define SAVE G(KC_S)
 
     #define PREV_W A(KC_LEFT)
     #define NEXT_W A(KC_RGHT)
@@ -51,6 +52,7 @@
     #define COPY C(KC_C)
     #define PASTE C(KC_V)
     #define SLCTALL C(KC_A)
+    #define SAVE C(KC_S)
 
     #define PREV_W C(KC_LEFT)
     #define NEXT_W C(KC_RGHT)
@@ -129,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX, XXXXXXX,    REDO,    UNDO,  KC_SPC, XXXXXXX,                      KC_WH_U, KC_PGUP,   KC_UP, KC_PGDN, KC_WH_D, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, SLCTALL, KC_LALT, XXXXXXX, KC_LSFT, XXXXXXX,                         HOME,  PREV_W, KC_DOWN,  NEXT_W,     END, XXXXXXX,
+      XXXXXXX, SLCTALL, KC_LALT,    SAVE, KC_LSFT, XXXXXXX,                         HOME,  PREV_W, KC_DOWN,  NEXT_W,     END, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX,     CUT,    COPY,   PASTE, XXXXXXX,                      KC_BTN4, KC_LEFT, XXXXXXX, KC_RGHT, KC_BTN5, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -203,6 +205,11 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, ui
     // Allow thumb keys
     if (tap_hold_record->event.key.row == 3 || tap_hold_record->event.key.row == 7) {
         return true;
+    }
+
+    switch (other_keycode){
+        case KC_TAB:
+            return true;
     }
 
     // Otherwise, follow the opposite hands rule.
